@@ -1,6 +1,7 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express'; // NextFunction 추가됨
 import dotenv from 'dotenv';
 import cors from 'cors';
+import crypto from 'crypto'; // 이미 추가하셨네요! 굿!
 import cookieParser from 'cookie-parser';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './core/docs/swagger';
@@ -46,6 +47,21 @@ app.use(
   }),
 );
 app.use(cookieParser());
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const token = req.cookies.csrfToken || crypto.randomBytes(64).toString('hex');
+
+  //쿠키 설정 강제 덮어쓰기
+  res.cookie('csrfToken', token, {
+    httpOnly: false,
+    secure: true,
+    sameSite: 'none',
+    path: '/',
+  });
+
+  next();
+});
+
 app.use(express.json());
 app.use(extractUserMiddleware);
 app.use(express.urlencoded({ extended: true })); // 필요한거야?  // body-parser 대체

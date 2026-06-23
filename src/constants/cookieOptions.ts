@@ -1,9 +1,11 @@
+const isProduction = process.env.NODE_ENV === 'production';
+
 export const COOKIE_OPTIONS = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'lax' as const,
   path: '/',
-  domain: process.env.NODE_ENV === 'production' ? process.env.COOKIE_DOMAIN : 'localhost',
+  sameSite: (isProduction ? 'lax' : 'none') as 'lax' | 'none',
+  secure: isProduction || true,
+  domain: isProduction ? process.env.COOKIE_DOMAIN : undefined,
 };
 
 export const ACCESS_TOKEN_MAX_AGE = 1 * 60 * 60 * 1000;

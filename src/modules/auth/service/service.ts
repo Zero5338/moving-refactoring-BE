@@ -17,18 +17,23 @@ export default class AuthService {
   constructor(private userRepository: UserRepository) {}
 
   async signIn({ email, password }: SignInRequest, type: LowercaseUserType) {
+    console.log('로그인 디버깅 시작');
     const uppercaseType = type.toUpperCase() as UserType;
+    console.log(`2. [TRANSFORM] 대문자 변환: "${uppercaseType}"`);
+    console.log('3. [DB] findByEmail 호출 직전...');
     const userEntity = await this.userRepository.findByEmail(email);
+    console.log('4. [DB] 조회 결과:', userEntity);
+
     if (!userEntity) throw new NotFoundException(AUTH_MESSAGES.emailNotExist);
     if (userEntity.userType !== uppercaseType)
       throw new ConflictException(AUTH_MESSAGES.invalidRole[type]);
-
+    console.log('6. [PASS] 유저 조회 및 타입 검사 통과! 비밀번호 검사 진행...');
     const isPasswordValid = await bcrypt.compare(password, userEntity?.password);
     if (!isPasswordValid) throw new UnauthorizedException(AUTH_MESSAGES.invalidPassword);
 
     const profile = userEntity[type];
     const tokens = generateTokens(userEntity.id, profile?.id ?? '', type);
-
+    console.log('============== [✅ 로그인 로직 완료] ==============\n');
     return {
       tokens,
       user: {
