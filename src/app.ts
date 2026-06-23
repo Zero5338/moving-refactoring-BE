@@ -1,7 +1,7 @@
-import express, { Request, Response, NextFunction } from 'express'; // NextFunction 추가됨
+import express, { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import crypto from 'crypto'; // 이미 추가하셨네요! 굿!
+import crypto from 'crypto';
 import cookieParser from 'cookie-parser';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './core/docs/swagger';
