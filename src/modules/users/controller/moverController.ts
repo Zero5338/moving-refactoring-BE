@@ -5,6 +5,7 @@ export async function getMoverProfile(req: Request, res: Response) {
   const userId = req?.userInfo?.userId ?? '';
   try {
     const moverProfile = await getMoverProfileDetail(userId);
+
     res.status(200).json(moverProfile);
     return;
   } catch (error) {

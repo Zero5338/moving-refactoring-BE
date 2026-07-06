@@ -15,6 +15,7 @@ export class UploadService {
   }
 
   async generateUploadUrl(filename: string) {
+    console.log('[DEBUG]', JSON.stringify(process.env.CLOUDFRONT_URL));
     const key = `uploads/${Date.now()}-${filename}`;
     const command = new PutObjectCommand({
       Bucket: process.env.AWS_BUCKET_NAME,
@@ -23,7 +24,7 @@ export class UploadService {
 
     const uploadUrl = await getSignedUrl(this.s3Client, command, { expiresIn: 3600 });
     const imageUrl = `${process.env.CLOUDFRONT_URL}/${key}`;
-
+    console.log('[DEBUG] imageUrl:', imageUrl);
     return { uploadUrl, imageUrl };
   }
 }

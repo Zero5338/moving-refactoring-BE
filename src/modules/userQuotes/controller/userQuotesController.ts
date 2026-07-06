@@ -36,6 +36,10 @@ export async function confirmQuote(req: Request, res: Response): Promise<Respons
     await quoteService.confirmQuote(moverQuoteId, customerId);
     return res.status(200).json({ message: '견적이 확정되었습니다.' });
   } catch (error) {
+    // 🚨 [디버깅용 로그 추가] 터미널에 에러 원인을 강제로 찍어라!
+    console.error('======= 🔥 견적 확정 에러 발생 원인 =======');
+    console.error(error);
+    console.error('==========================================');
     return handleError(error, res);
   }
 }

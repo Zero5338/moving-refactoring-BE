@@ -27,7 +27,6 @@ import { setupAuthStrategies } from './modules/auth/strategy';
 import { csrfMiddleware } from './core/middleware/csrf';
 
 dotenv.config();
-
 // 환경 변수 설정
 const port = process.env.PORT || 8080;
 const allowedOrigins: string[] = [
