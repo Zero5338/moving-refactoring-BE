@@ -138,3 +138,6 @@ dist
 .svelte-kit
 
 .http
+
+# Docker
+docker-compose.yml
